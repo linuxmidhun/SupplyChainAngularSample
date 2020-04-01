@@ -18,6 +18,7 @@ import { ErrorInterceptor } from './_helpers/error.interceptor';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule
     // FlexLayoutModule
   ],
   providers: [

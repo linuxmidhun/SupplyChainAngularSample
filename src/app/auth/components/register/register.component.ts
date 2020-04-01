@@ -4,6 +4,10 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user/user.service';
 import { first } from 'rxjs/operators';
 
+
+import { AuthenticationService } from '../../../services/user/authentication.service';
+import { AlertService } from '../../../services/common/alert.service';
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -16,8 +20,15 @@ export class RegisterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private userService: UserService
-  ) { }
+    private userService: UserService,
+    private alertService: AlertService,
+    private authenticationService: AuthenticationService
+  ) {
+    // redirect to home if already logged in
+    if (this.authenticationService.currentUserValue) {
+      this.router.navigate(['/']);
+    }
+  }
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
@@ -32,7 +43,6 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-
     // stop here if form is invalid
     if (this.registerForm.invalid) {
       return;
@@ -42,11 +52,11 @@ export class RegisterComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          // this.alertService.success('Registration successful', true);
-          this.router.navigate(['/login']);
+          this.alertService.success('Registration successful', true);
+          this.router.navigate(['/auth/login']);
         },
         error => {
-          // this.alertService.error(error);
+          this.alertService.error(error);
           // this.loading = false;
         });
   }
