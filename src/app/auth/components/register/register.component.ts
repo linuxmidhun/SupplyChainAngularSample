@@ -16,7 +16,7 @@ import { AlertService } from '../../../services/common/alert.service';
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   submitted = false;
-  Roles: any = ['Admin', 'Supplier', 'Customer'];
+  Roles: any = ['Admin', 'Supplier', 'Consumer'];
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,

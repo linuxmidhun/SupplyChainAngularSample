@@ -1,14 +1,16 @@
-<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+<div fxLayout="row">
+  <div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
     <mat-card class="box">
       <mat-card-header>
         <mat-card-title>Log in</mat-card-title>
       </mat-card-header>
+      <app-alert></app-alert>
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="example-form">
         <mat-card-content>
           <mat-form-field class="example-full-width">
             <input matInput required formControlName="username" placeholder="Username">
           </mat-form-field>
-  
+
           <mat-form-field class="example-full-width">
             <input matInput required formControlName="password" type="password" placeholder="Password">
           </mat-form-field>
@@ -19,6 +21,6 @@
         <button mat-stroked-button color="accent" class="btn-block">Log in</button>
         <a routerLink="/auth/register">Register</a>
       </form>
-    </mat-card>    
+    </mat-card>
   </div>
-  
+</div>

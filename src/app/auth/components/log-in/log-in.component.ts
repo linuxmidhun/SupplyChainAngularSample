@@ -52,24 +52,34 @@ export class LogInComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    console.log(this.loginForm.value);
+
     // stop here if form is invalid
     if (this.loginForm.invalid) {
-        return;
+      return;
     }
 
     this.loading = true;
     this.authenticationService.login(this.f.username.value, this.f.password.value)
-        .pipe(first())
-        .subscribe(
-            data => {
-                this.router.navigate(['/consumer/items']);
-                // this.router.navigate([this.returnUrl]);
-            },
-            error => {
-                this.alertService.error(error);
-                this.loading = false;
-            });
+      .pipe(first())
+      .subscribe(
+        data => {
+          switch (data.role) {
+            case 'Consumer':
+              return this.router.navigate(['/consumer/items']);
+            case 'Supplier':
+              return this.router.navigate(['/supplier/items']);
+            case 'Admin':
+              return this.router.navigate(['/admin/items']);
+            default:
+              this.alertService.error('user type not defined');
+              break;
+          }
+          // this.router.navigate([this.returnUrl]);
+        },
+        error => {
+          this.alertService.error(error);
+          this.loading = false;
+        });
   }
 
   // private executeService(loginreq: LoginRequest) {
