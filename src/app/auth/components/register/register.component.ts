@@ -33,7 +33,6 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
       username: ['', Validators.required],
-      email: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
       role: ['', Validators.required]
     });
@@ -43,21 +42,23 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
+    console.log(this.registerForm.value);
     // stop here if form is invalid
     if (this.registerForm.invalid) {
       return;
+    } else {
+      this.userService.register(this.registerForm.value)
+        .pipe(first())
+        .subscribe(
+          data => {
+            this.alertService.success('Registration successful', true);
+            this.router.navigate(['/auth/login']);
+          },
+          error => {
+            console.log(error);
+            this.alertService.error(error);
+            // this.loading = false;
+          });
     }
-
-    this.userService.register(this.registerForm.value)
-      .pipe(first())
-      .subscribe(
-        data => {
-          this.alertService.success('Registration successful', true);
-          this.router.navigate(['/auth/login']);
-        },
-        error => {
-          this.alertService.error(error);
-          // this.loading = false;
-        });
   }
 }

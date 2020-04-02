@@ -5,6 +5,7 @@ import { ConsumerRoutingModule } from './consumer-routing.module';
 import { MasterComponent } from './components/master/master.component';
 import { ItemsComponent } from './components/items/items.component';
 import { AngularMaterialModule } from '../angular-material.module';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import { AngularMaterialModule } from '../angular-material.module';
   imports: [
     CommonModule,
     ConsumerRoutingModule,
-    AngularMaterialModule
+    AngularMaterialModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [MasterComponent],

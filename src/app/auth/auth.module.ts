@@ -7,6 +7,7 @@ import { LogInComponent } from './components/log-in/log-in.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AngularMaterialModule } from '../angular-material.module';
 // import { FlexLayoutModule } from '@angular/flex-layout';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { AngularMaterialModule } from '../angular-material.module';
     AngularMaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    SharedModule
     // FlexLayoutModule
   ],
   providers: [],

@@ -6,9 +6,6 @@ import { first } from 'rxjs/operators';
 import { AuthenticationService } from '../../../services/user/authentication.service';
 import { AlertService } from '../../../services/common/alert.service';
 
-import { LoginResponse } from '../../models/LoginResponse';
-import { LoginRequest } from '../../models/LoginRequest';
-
 
 @Component({
   selector: 'app-log-in',
@@ -53,9 +50,9 @@ export class LogInComponent implements OnInit {
 
   get f() { return this.loginForm.controls; }
 
-  login() {
+  onSubmit() {
     this.submitted = true;
-
+    console.log(this.loginForm.value);
     // stop here if form is invalid
     if (this.loginForm.invalid) {
         return;
@@ -66,7 +63,6 @@ export class LogInComponent implements OnInit {
         .pipe(first())
         .subscribe(
             data => {
-                console.log(data);
                 this.router.navigate(['/consumer/items']);
                 // this.router.navigate([this.returnUrl]);
             },
