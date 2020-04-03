@@ -17,4 +17,12 @@ export class UserService {
   register(user: User) {
     return this.http.post('/users/register', user);
   }
+
+  getConsumers() {
+    return this.http.get<User[]>('/consumers');
+  }
+
+  getSuppliers() {
+    return this.http.get<User[]>('/suppliers');
+  }
 }

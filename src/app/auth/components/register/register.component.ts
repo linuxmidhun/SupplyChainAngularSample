@@ -7,6 +7,7 @@ import { first } from 'rxjs/operators';
 
 import { AuthenticationService } from '../../../services/user/authentication.service';
 import { AlertService } from '../../../services/common/alert.service';
+import { Role } from 'src/app/_models/role';
 
 @Component({
   selector: 'app-register',
@@ -16,7 +17,7 @@ import { AlertService } from '../../../services/common/alert.service';
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   submitted = false;
-  Roles: any = ['Admin', 'Supplier', 'Consumer'];
+  Roles = Object.keys(Role);
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -42,23 +43,20 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    console.log(this.registerForm.value);
     // stop here if form is invalid
     if (this.registerForm.invalid) {
       return;
-    } else {
-      this.userService.register(this.registerForm.value)
-        .pipe(first())
-        .subscribe(
-          data => {
-            this.alertService.success('Registration successful', true);
-            this.router.navigate(['/auth/login']);
-          },
-          error => {
-            console.log(error);
-            this.alertService.error(error);
-            // this.loading = false;
-          });
     }
+
+    this.userService.register(this.registerForm.value)
+      .pipe(first())
+      .subscribe(
+        data => {
+          this.alertService.success('Registration successful', true);
+          this.router.navigate(['/auth/login']);
+        },
+        error => {
+          this.alertService.error(error);
+        });
   }
 }

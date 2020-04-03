@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Item } from 'src/app/_models/item';
+import { ItemService } from 'src/app/services/supply/item.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-items',
@@ -7,9 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ItemsComponent implements OnInit {
 
-  constructor() { }
+  displayedColumns: string[] = ['name', 'highdemand'];
+  items: Item[] = [];
+  constructor(
+    private itemService: ItemService
+  ) { }
 
   ngOnInit() {
+    this.itemService.getAll().pipe(first()).subscribe(items => {
+      this.items = items;
+    });
   }
 
 }

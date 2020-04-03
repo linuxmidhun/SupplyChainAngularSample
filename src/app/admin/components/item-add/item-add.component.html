@@ -1,0 +1,16 @@
+<h3>Items</h3>
+<div>
+    <mat-card>
+        <app-alert></app-alert>
+        <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+            <mat-card-content>
+                <mat-form-field>
+                    <input matInput formControlName="name" placeholder="Name">
+                </mat-form-field>
+            </mat-card-content>
+            <input matInput style="display: none;" formControlName="creataedby" />
+            <br />
+            <button mat-raised-button color="primary">Save</button>
+        </form>
+    </mat-card>
+</div>

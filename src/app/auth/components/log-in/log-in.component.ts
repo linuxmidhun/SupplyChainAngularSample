@@ -14,7 +14,6 @@ import { AlertService } from '../../../services/common/alert.service';
 })
 export class LogInComponent implements OnInit {
   loginForm: FormGroup;
-  loading = false;
   submitted = false;
   returnUrl: string;
 
@@ -30,12 +29,6 @@ export class LogInComponent implements OnInit {
       this.router.navigate(['/auth/login']);
     }
   }
-
-  // username = '';
-  // password = '';
-  // error: string;
-  // withError = false;
-  // loginResponse: LoginResponse;
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -58,17 +51,25 @@ export class LogInComponent implements OnInit {
       return;
     }
 
-    this.loading = true;
     this.authenticationService.login(this.f.username.value, this.f.password.value)
       .pipe(first())
       .subscribe(
         data => {
           switch (data.role) {
             case 'Consumer':
+              if (this.returnUrl !== '' && this.returnUrl.includes('/consumer/')) {
+                return this.router.navigate([this.returnUrl]);
+              }
               return this.router.navigate(['/consumer/items']);
             case 'Supplier':
+              if (this.returnUrl !== '' && this.returnUrl.includes('/supplier/')) {
+                return this.router.navigate([this.returnUrl]);
+              }
               return this.router.navigate(['/supplier/items']);
             case 'Admin':
+              if (this.returnUrl !== '' && this.returnUrl.includes('/admin/')) {
+                return this.router.navigate([this.returnUrl]);
+              }
               return this.router.navigate(['/admin/items']);
             default:
               this.alertService.error('user type not defined');
@@ -78,7 +79,6 @@ export class LogInComponent implements OnInit {
         },
         error => {
           this.alertService.error(error);
-          this.loading = false;
         });
   }
 

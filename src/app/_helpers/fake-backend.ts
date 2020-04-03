@@ -5,7 +5,7 @@ import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 
 // array in local storage for registered users
 let users = JSON.parse(localStorage.getItem('users')) || [];
-// let items = JSON.parse(localStorage.getItem('items')) || [];
+let items = JSON.parse(localStorage.getItem('items')) || [];
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -27,6 +27,16 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     return register();
                 case url.endsWith('/users') && method === 'GET':
                     return getUsers();
+                case url.endsWith('/consumers') && method === 'GET':
+                    return getConsumers();
+                case url.endsWith('/suppliers') && method === 'GET':
+                    return getSuppliers();
+                case url.endsWith('/items') && method === 'GET':
+                    return getItems();
+                case url.endsWith('/items') && method === 'POST':
+                    return addItem();
+                case url.match(/\/items\/\d+$/) && method === 'DELETE':
+                    return deleteItem();
                 // case url.match(/\/users\/\d+$/) && method === 'DELETE':
                 //     return deleteUser();
                 default:
@@ -37,6 +47,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         // route functions
 
+        // User Functions
         function authenticate() {
             const { username, password } = body;
             const user = users.find(x => x.username === username && x.password === password);
@@ -68,6 +79,16 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             return ok(users);
         }
 
+        function getConsumers() {
+            const consumers = users.filter(x => x.role === 'Consumer');
+            return ok(consumers);
+        }
+
+        function getSuppliers() {
+            const suppliers = users.filter(x => x.role === 'Supplier');
+            return ok(suppliers);
+        }
+
         function deleteUser() {
             if (!isLoggedIn()) { return unauthorized(); }
 
@@ -76,6 +97,35 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             return ok();
         }
 
+        // inventory functions
+
+        function getItems() {
+            if (!isLoggedIn()) { return unauthorized(); }
+            return ok(items);
+        }
+
+        function addItem() {
+            if (!isLoggedIn()) { return unauthorized(); }
+            const item = body;
+
+            if (items.find(x => x.name === item.name)) {
+                return error('"' + item.name + '" is already a listed item');
+            }
+
+            item.id = items.length ? Math.max(...items.map(x => x.id)) + 1 : 1;
+            items.push(item);
+            localStorage.setItem('items', JSON.stringify(items));
+
+            return ok();
+        }
+
+        function deleteItem() {
+            if (!isLoggedIn()) { return unauthorized(); }
+
+            items = items.filter(x => x.id !== idFromUrl());
+            localStorage.setItem('items', JSON.stringify(items));
+            return ok();
+        }
         // helper functions
 
         // tslint:disable-next-line:no-shadowed-variable
