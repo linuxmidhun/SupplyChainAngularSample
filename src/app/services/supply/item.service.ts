@@ -21,4 +21,8 @@ export class ItemService {
   delete(id: number) {
     return this.http.delete(`/items/${id}`);
   }
+
+  getFeaturedItems() {
+    return this.http.get<Item[]>('/items/featured');
+  }
 }

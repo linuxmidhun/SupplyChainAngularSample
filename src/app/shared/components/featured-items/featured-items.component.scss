@@ -1,0 +1,11 @@
+.box {
+    width : 200px;
+    float : left;
+    margin: 5px;
+    color : rebeccapurple;
+}
+
+.box:hover {
+    background: rebeccapurple;
+    color     : white;
+}

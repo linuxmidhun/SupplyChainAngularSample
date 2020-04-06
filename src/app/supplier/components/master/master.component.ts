@@ -6,10 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./master.component.scss']
 })
 export class MasterComponent implements OnInit {
-
+  activeUser: string;
   constructor() { }
 
   ngOnInit() {
+    this.activeUser = localStorage.currentUserName;
   }
 
 }

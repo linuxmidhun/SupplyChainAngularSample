@@ -31,7 +31,8 @@ export class ItemAddComponent implements OnInit {
     this.activeUser = localStorage.currentUserName;
     this.itemForm = this.formBuilder.group({
       name: ['', Validators.required],
-      creataedby: [this.activeUser, Validators.required]
+      creataedby: [this.activeUser, Validators.required],
+      featured: [false, Validators.required]
     });
 
   }

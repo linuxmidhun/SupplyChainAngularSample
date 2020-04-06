@@ -1,0 +1,17 @@
+<h3>Featured Items</h3>
+<div *ngIf="isWithItems">
+    <div *ngFor="let d of featured">
+        <mat-card class="box">
+            <mat-card-title><h2> {{d.name}}</h2></mat-card-title>
+            <mat-card-content>
+                <p>{{d.name}} is with id {{d.id}}</p>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+<div *ngIf="!isWithItems && !loading">
+    <mat-error>No Items found.</mat-error>
+</div>
+<div *ngIf="loading">
+    Loading...
+</div>

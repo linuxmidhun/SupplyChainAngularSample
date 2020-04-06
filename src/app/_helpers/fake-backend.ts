@@ -4,6 +4,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 
 // array in local storage for registered users
+// tslint:disable-next-line:prefer-const
 let users = JSON.parse(localStorage.getItem('users')) || [];
 let items = JSON.parse(localStorage.getItem('items')) || [];
 
@@ -37,8 +38,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     return addItem();
                 case url.match(/\/items\/\d+$/) && method === 'DELETE':
                     return deleteItem();
-                // case url.match(/\/users\/\d+$/) && method === 'DELETE':
-                //     return deleteUser();
+                case url.match('/items/featured') && method === 'GET':
+                    return getTopItems();
                 default:
                     // pass through any requests not handled above
                     return next.handle(request);
@@ -89,14 +90,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             return ok(suppliers);
         }
 
-        function deleteUser() {
-            if (!isLoggedIn()) { return unauthorized(); }
-
-            users = users.filter(x => x.id !== idFromUrl());
-            localStorage.setItem('users', JSON.stringify(users));
-            return ok();
-        }
-
         // inventory functions
 
         function getItems() {
@@ -126,6 +119,14 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             localStorage.setItem('items', JSON.stringify(items));
             return ok();
         }
+
+        function getTopItems() {
+            if (!isLoggedIn()) { return unauthorized(); }
+
+            const list = items.filter(x => x.id <= 5);
+            return ok(list);
+        }
+
         // helper functions
 
         // tslint:disable-next-line:no-shadowed-variable
